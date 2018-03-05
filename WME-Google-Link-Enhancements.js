@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         WME Google Link Enhancements (with map markers)
+// @name         WME Google Link Enhancements
 // @namespace    WazeDev
 // @version      2018.03.04.001
 // @description  Shows Google places on the map when hovering over links.  Highlights links that are already linked.
@@ -807,9 +807,10 @@ let SETTINGS_STORE_NAME = '_wme_gle_settings';
 let WARNING_TEXT = 'GOOGLE LINK ENHANCEMENTS\n\nInformation displayed by this script should only be used as a reference.\n\nDO NOT delete Waze places without verifying the place is actually closed.  Some may only be closed seasonally, for instance.' +
     '\n\nReview Wazeopedia for the proper way to handle closed places.  If in doubt, ask in your community forum.';
 let _glEnhancer;
+let _settings = {};
 
 function loadSettings() {
-    var loadedSettings = $.parseJSON(localStorage.getItem(this.SETTINGS_STORE_NAME));
+    var loadedSettings = $.parseJSON(localStorage.getItem(SETTINGS_STORE_NAME));
     var defaultSettings = {
         warningDisplayed: false
     };
@@ -823,7 +824,7 @@ function loadSettings() {
 
 function saveSettings() {
     if (localStorage) {
-        localStorage.setItem(_settingsStoreName, JSON.stringify(_settings));
+        localStorage.setItem(SETTINGS_STORE_NAME, JSON.stringify(_settings));
     }
 }
 
@@ -833,6 +834,8 @@ function init() {
     _glEnhancer.enable();
     if (!_settings.warningDisplayed) {
         alert(WARNING_TEXT);
+        _settings.warningDisplayed = true;
+        saveSettings();
     }
 }
 
